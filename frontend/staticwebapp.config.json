@@ -7,21 +7,10 @@
         {
             "route": "/authenticated/*",
             "allowedRoles": [ "authenticated" ]
-        },
-        {
-            "route": "/.auth/login/aad/callback",
-            "allowedRoles": ["anonymous", "authenticated"]
-          },
-          {
-            "route": "/login",
-            "rewrite": "/.auth/login/aad"
-          },
-          {
-            "route": "/logout",
-            "rewrite": "/.auth/logout"
-          }
+        }
     ],
     "auth": {
+        "rolesSource": "/api/GetRoles",
         "identityProviders": {
             "azureActiveDirectory": {
                 "userDetailsClaim": "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name",
@@ -29,8 +18,19 @@
                     "openIdIssuer": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47",
                     "clientIdSettingName": "AAD_CLIENT_ID",
                     "clientSecretSettingName": "AAD_CLIENT_SECRET"
+                },
+                "login": {
+                    "loginParameters": [
+                        "resource=https://graph.microsoft.com"
+                    ]
                 }
             }
         }
-    }
+    },
+    "globalHeaders": {
+        "Cache-Control": "no-cache"
+    },
+	"platform": {
+		"apiRuntime": "dotnet-isolated:8.0"
+	}
 }
